@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { loginWithEmail, signupWithEmail } from '../firebase';
 
 const AuthForm = ({ onAuthed }) => {
@@ -18,7 +17,6 @@ const AuthForm = ({ onAuthed }) => {
         mode === 'login'
           ? await loginWithEmail(email, password)
           : await signupWithEmail(email, password);
-      // store a basic session
       localStorage.setItem('fitforgeUser', JSON.stringify(user));
       onAuthed(user);
     } catch (err) {
@@ -29,12 +27,7 @@ const AuthForm = ({ onAuthed }) => {
   };
 
   return (
-    <motion.div
-      initial={{ y: 80, scale: 0.9, opacity: 0 }}
-      animate={{ y: 0, scale: 1, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-      className="w-full max-w-sm mx-auto rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 p-6 shadow-2xl"
-    >
+    <div className="w-full max-w-sm mx-auto rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 p-6 shadow-2xl">
       <h3 className="text-white text-lg font-semibold mb-2">{mode === 'login' ? 'Welcome back' : 'Create account'}</h3>
       <p className="text-white/60 text-sm mb-4">Sign {mode === 'login' ? 'in' : 'up'} to continue</p>
 
@@ -72,7 +65,7 @@ const AuthForm = ({ onAuthed }) => {
           <button className="underline hover:text-white" onClick={() => setMode('login')}>Have an account? Sign in</button>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

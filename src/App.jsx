@@ -3,19 +3,19 @@ import { motion } from 'framer-motion';
 import GradientBackground from './components/GradientBackground';
 import TabBar from './components/TabBar';
 import Pages from './components/Pages';
-import Intro from './components/Intro';
 import OnboardingForm from './components/OnboardingForm';
+import AuthOverlay from './components/AuthOverlay';
 
 function App() {
   const [current, setCurrent] = useState('home');
-  const [stage, setStage] = useState('intro'); // 'intro' | 'onboarding' | 'app'
+  const [stage, setStage] = useState('auth'); // 'auth' | 'onboarding' | 'app'
 
   useEffect(() => {
     const user = localStorage.getItem('fitforgeUser');
     const profile = localStorage.getItem('fitforgeProfile');
     if (user && profile) setStage('app');
     else if (user) setStage('onboarding');
-    else setStage('intro');
+    else setStage('auth');
   }, []);
 
   const handleAuthenticated = () => {
@@ -29,8 +29,8 @@ function App() {
     <div className="min-h-screen w-full bg-gradient-to-b from-[#0a0f1f] to-[#050814] text-white font-[Poppins,Inter,ui-sans-serif]">
       <GradientBackground />
 
-      {/* Entrance + Auth sequence overlay */}
-      {stage === 'intro' && <Intro onAuthenticated={handleAuthenticated} />}
+      {/* Auth overlay slides up on load when no user */}
+      {stage === 'auth' && <AuthOverlay onAuthenticated={handleAuthenticated} />}
 
       <header className="px-4 pt-5 pb-2">
         <motion.div
@@ -48,7 +48,7 @@ function App() {
             <OnboardingForm onComplete={handleOnboardingDone} />
           </div>
         ) : (
-          <Pages current={current} />
+          stage === 'app' && <Pages current={current} />
         )}
       </main>
 
